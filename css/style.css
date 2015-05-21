@@ -1,0 +1,12 @@
+#standings {
+	padding-bottom: 10px;
+}
+
+th {
+	font-weight: bold;
+}
+
+#schedule ul input{
+	max-width: 10px;
+	margin-left: 2px;
+}
