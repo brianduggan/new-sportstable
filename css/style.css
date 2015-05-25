@@ -10,3 +10,7 @@ th {
 	max-width: 10px;
 	margin-left: 2px;
 }
+
+#team-row td {
+	text-align: center;
+}

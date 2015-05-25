@@ -29,7 +29,7 @@ $(function(){
 		};
 		//// SECOND TABLE ROW ////
 		this.tablerow = function(){
-			return "<tr><th>" + this.abbr + "</th><td data-id='0'></td><td data-id='1'></td><td data-id='2'></td><td data-id='3'></td><td data-id='4'></td><td data-id='5'></td></tr>";
+			return "<tr data-row='"+this.id+"'><th>" + this.abbr + "</th><td data-id='0'></td><td data-id='1'></td><td data-id='2'></td><td data-id='3'></td><td data-id='4'></td><td data-id='5'></td></tr>";
 		};
 		
 		//// SECOND TABLE DISPLAY ////
@@ -43,7 +43,7 @@ $(function(){
 
 
 	//// SORTABLE TABLE ////
-	 $('#simpleTable').stupidtable(); //COMMENTING THIS OUT BECAUSE THERE IS CURRENTLY NO INTERNET!!!!!!!!!!!!!!!!!!
+	 $('#simpleTable').stupidtable();
 	
 	//// CREATE TEAM ARRAY ////
 	Team.all = [];
@@ -59,14 +59,8 @@ $(function(){
 	//// DISPLAY TEAMS IN TABLE 1 ////	
 	for (var i = 0; i < Team.all.length; i++){
 		Team.all[i].display();
-	}
-
-	//// DISPLAY TEAMS IN TABLE 2 ////	
-	for (var i = 0; i < Team.all.length; i++){
 		Team.all[i].display2();
 	}
-
-
 
 
 	//// MATCH DISPLAY ////
@@ -88,24 +82,39 @@ $(function(){
 			for (var i = 0; i < Team.all.length; i++){
 				// DECLARE VARIABLES
 				var index = $('#game1').find("input[data-id='"+Team.all[i].id+"']").index(),
-					$teamscore = parseInt($('#game1').find("input[data-id='"+Team.all[i].id+"']").val()),
-					$oppscore = 0;
-				//FIND OPPONENT'S SCORE IN THE LI
+					teamscore = parseInt($('#game1').find("input[data-id='"+Team.all[i].id+"']").val()),
+					oppscore = 0;
+				//FIND OPPONENT'S SCORE IN THE LI and MANIPULATE TABLE 2
 				if (index === 0){	//could add home and away goal criteria, as well as table2 display here if i wanted
-					var $oppscore = parseInt($('#game1').find("input[data-id='"+Team.all[i].id+"']").parent().find('input').eq(1).val());
+				
+					var oppscore = parseInt($('#game1').find("input[data-id='"+Team.all[i].id+"']").parent().find('input').eq(1).val());
+					$('#team-row').find("tr[data-row='"+Team.all[i].id+"']").find("td[data-id='"+Team.all[i].id+"']").html("X");
+				
 				} else {
-					var $oppscore =  parseInt($('#game1').find("input[data-id='"+Team.all[i].id+"']").parent().find('input').eq(0).val());
-				};
+					var oppscore =  parseInt($('#game1').find("input[data-id='"+Team.all[i].id+"']").parent().find('input').eq(0).val());
+					score = function(){
+						return oppscore + " - " + teamscore;
+					};
+					$('#game1').find("input[data-id='"+Team.all[i].id+"']").parent().append(score()); //APPEND SCORES IN PLACE OF DATA INPUTS
+					
+					//DISPLAY 
+					$('#team-row').find("tr[data-row='"+Team.all[i].id+"']").find("td[data-id='"+Team.all[i].id+"']").html("X");
+
+				}
 				//MODIFY TABLE DATA
 				Team.all[i].games += 1;
-				Team.all[i].gf += $teamscore;
-				Team.all[i].ga += $oppscore;
+				Team.all[i].gf += teamscore;
+				Team.all[i].ga += oppscore;
 				Team.all[i].diff += parseInt(Team.all[i].gf - Team.all[i].ga);
 
-				if ($teamscore > $oppscore){
+				if ($('input').val() === ""){		//TABLE VALIDATION
+					return alert("fill in the boxes!!!");
+				}
+
+				if (teamscore > oppscore){
 					Team.all[i].wins += 1;
 					Team.all[i].points +=3;
-				} else if ($oppscore > $teamscore){
+				} else if (oppscore > teamscore){
 					Team.all[i].losses += 1;
 				} else {
 					Team.all[i].draws += 1;
@@ -115,11 +124,11 @@ $(function(){
 
 				$('tbody').find('tr[data-id="'+Team.all[i].id+'"]').remove();
 				Team.all[i].display();
-				//TO ADD::: DISPLAY2:::
-				//PICK OUT TEAM.ALL[I].ID TR AND IN TD DATA-ID=OPPONENT ID AND FILL IN THE GAME-SCORE
+
 			} //end for loop
 
 			$("#play").remove(); //Remove this button, so that you can only play this game once.
+			$('input').hide();
 
 	});
 	//GAME 2
