@@ -75,25 +75,23 @@ $(function(){
 	}
 	$("#game1").append(DisplayGame1());
 
+	//ROUND 2
 	function DisplayGame2(){
-		return "<li>"+czech.abbr+"<input data-id='"+czech.id+"'> vs. "+iceland.abbr+"<input data-id='"+iceland.id+"'></li>"+
-		"<li>"+netherlands.abbr+"<input data-id='"+netherlands.id+"'> vs. "+turkey.abbr+"<input data-id='"+turkey.id+"'></li>"+
-		"<li>"+latvia.abbr+"<input data-id='"+latvia.id+"'> vs. "+kazakhstan.abbr+"<input data-id='"+kazakhstan.id+"'></li></ul>";
+		return "<li>"+iceland.abbr+"<input data-id='"+iceland.id+"'> vs. "+czech.abbr+"<input data-id='"+czech.id+"'></li>"+
+		"<li>"+turkey.abbr+"<input data-id='"+turkey.id+"'> vs. "+netherlands.abbr+"<input data-id='"+netherlands.id+"'></li>"+
+		"<li>"+kazakhstan.abbr+"<input data-id='"+kazakhstan.id+"'> vs. "+latvia.abbr+"<input data-id='"+latvia.id+"'></li></ul>";
 	}
 	$("#game2").append(DisplayGame2());
 
-	//DISPLAY ROUND 1 RESULTS
-	$(".play").click(function(event){
-		event.preventDefault();
 
 		//// CHANGE UNIFORM DATA ////
+			var gametime =	function (game){
 				for (var i = 0; i < Team.all.length; i++){
 				// DECLARE VARIABLES
-				var index = $('#game1').find("input[data-id='"+Team.all[i].id+"']").index(),
-					teamscore = parseInt($('#game1').find("input[data-id='"+Team.all[i].id+"']").val()),
+				var index = game.find("input[data-id='"+Team.all[i].id+"']").index(),
+					teamscore = parseInt(game.find("input[data-id='"+Team.all[i].id+"']").val()),
 					oppscore = 0, 
-					oppid = parseInt($('#game1').find("input[data-id='"+Team.all[i].id+"']").siblings().data('id'));
-				console.log(oppid);
+					oppid = parseInt(game.find("input[data-id='"+Team.all[i].id+"']").siblings().data('id'));
 				scoretable = function(){
 					return teamscore + " - " + oppscore; /////////////////// Order Issues, two different score functions necessary???
 				};
@@ -103,15 +101,14 @@ $(function(){
 
 				//FIND OPPONENT'S SCORE IN THE LI and MANIPULATE TABLE 2
 				if (index === 0){	//could add home and away goal criteria, as well as table2 display here if i wanted
-				
-					var oppscore = parseInt($('#game1').find("input[data-id='"+Team.all[i].id+"']").parent().find('input').eq(1).val());
+					var oppscore = parseInt(game.find("input[data-id='"+Team.all[i].id+"']").parent().find('input').eq(1).val());
 					$('#team-row').find("tr[data-row='"+Team.all[i].id+"']").find("td[data-id='"+Team.all[i].id+"']").html("X");
 					$('#team-row').find("tr[data-row='"+Team.all[i].id+"']").find("td[data-id='"+oppid+"']").html(scoretable());
-				
+					console.log(oppid + oppscore);
 				} else {
-					var oppscore =  parseInt($('#game1').find("input[data-id='"+Team.all[i].id+"']").parent().find('input').eq(0).val());
-					$('#game1').find("input[data-id='"+Team.all[i].id+"']").parent().append(scorefixture()); 
-					
+					var oppscore =  parseInt(game.find("input[data-id='"+Team.all[i].id+"']").parent().find('input').eq(0).val());
+					game.find("input[data-id='"+Team.all[i].id+"']").parent().append(scorefixture()); 
+					console.log(oppid, oppscore);
 					//DISPLAY 
 					$('#team-row').find("tr[data-row='"+Team.all[i].id+"']").find("td[data-id='"+Team.all[i].id+"']").html("X");
 				}
@@ -139,12 +136,28 @@ $(function(){
 				$('tbody').find('tr[data-id="'+Team.all[i].id+'"]').remove();
 				Team.all[i].display();
 
-			} //end for loop
+			}
+		}; //end for loop
 
-			$(".play").remove(); //Remove this button, so that you can only play this game once.
-			$('input').hide();
-
+	//DISPLAY ROUND 1 RESULTS
+	$("#play1").click(function(event){
+		event.preventDefault();
+		gametime($("#game1"));
+		$("#play1").remove(); //Remove this button, so that you can only play this game once.
+		$('#game1 input').hide();
 	});
+	
+	//DISPLAY ROUND 2 RESULTS
+	$("#play2").click(function(event){
+		event.preventDefault();
+		gametime($("#game2"));
+		$("#play2").remove(); //Remove this button, so that you can only play this game once.
+		$('#game2 input').hide();
+	});
+			// $(".play").remove(); //Remove this button, so that you can only play this game once.
+			// $('input').hide();
+
+	// });
 	//GAME 2
 	//GAME 3
 	//GAME 4
