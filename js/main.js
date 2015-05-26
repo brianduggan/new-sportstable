@@ -75,31 +75,45 @@ $(function(){
 	}
 	$("#game1").append(DisplayGame1());
 
+	function DisplayGame2(){
+		return "<li>"+czech.abbr+"<input data-id='"+czech.id+"'> vs. "+iceland.abbr+"<input data-id='"+iceland.id+"'></li>"+
+		"<li>"+netherlands.abbr+"<input data-id='"+netherlands.id+"'> vs. "+turkey.abbr+"<input data-id='"+turkey.id+"'></li>"+
+		"<li>"+latvia.abbr+"<input data-id='"+latvia.id+"'> vs. "+kazakhstan.abbr+"<input data-id='"+kazakhstan.id+"'></li></ul>";
+	}
+	$("#game2").append(DisplayGame2());
+
 	//DISPLAY ROUND 1 RESULTS
-	$("#play").click(function(event){
+	$(".play").click(function(event){
 		event.preventDefault();
+
 		//// CHANGE UNIFORM DATA ////
-			for (var i = 0; i < Team.all.length; i++){
+				for (var i = 0; i < Team.all.length; i++){
 				// DECLARE VARIABLES
 				var index = $('#game1').find("input[data-id='"+Team.all[i].id+"']").index(),
 					teamscore = parseInt($('#game1').find("input[data-id='"+Team.all[i].id+"']").val()),
-					oppscore = 0;
+					oppscore = 0, 
+					oppid = parseInt($('#game1').find("input[data-id='"+Team.all[i].id+"']").siblings().data('id'));
+				console.log(oppid);
+				scoretable = function(){
+					return teamscore + " - " + oppscore; /////////////////// Order Issues, two different score functions necessary???
+				};
+				scorefixture = function(){
+					return oppscore + " - " + teamscore; /////////////////// Order Issues, two different score functions necessary???
+				};
+
 				//FIND OPPONENT'S SCORE IN THE LI and MANIPULATE TABLE 2
 				if (index === 0){	//could add home and away goal criteria, as well as table2 display here if i wanted
 				
 					var oppscore = parseInt($('#game1').find("input[data-id='"+Team.all[i].id+"']").parent().find('input').eq(1).val());
 					$('#team-row').find("tr[data-row='"+Team.all[i].id+"']").find("td[data-id='"+Team.all[i].id+"']").html("X");
+					$('#team-row').find("tr[data-row='"+Team.all[i].id+"']").find("td[data-id='"+oppid+"']").html(scoretable());
 				
 				} else {
 					var oppscore =  parseInt($('#game1').find("input[data-id='"+Team.all[i].id+"']").parent().find('input').eq(0).val());
-					score = function(){
-						return oppscore + " - " + teamscore;
-					};
-					$('#game1').find("input[data-id='"+Team.all[i].id+"']").parent().append(score()); //APPEND SCORES IN PLACE OF DATA INPUTS
+					$('#game1').find("input[data-id='"+Team.all[i].id+"']").parent().append(scorefixture()); 
 					
 					//DISPLAY 
 					$('#team-row').find("tr[data-row='"+Team.all[i].id+"']").find("td[data-id='"+Team.all[i].id+"']").html("X");
-
 				}
 				//MODIFY TABLE DATA
 				Team.all[i].games += 1;
@@ -127,7 +141,7 @@ $(function(){
 
 			} //end for loop
 
-			$("#play").remove(); //Remove this button, so that you can only play this game once.
+			$(".play").remove(); //Remove this button, so that you can only play this game once.
 			$('input').hide();
 
 	});
