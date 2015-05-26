@@ -104,11 +104,9 @@ $(function(){
 					var oppscore = parseInt(game.find("input[data-id='"+Team.all[i].id+"']").parent().find('input').eq(1).val());
 					$('#team-row').find("tr[data-row='"+Team.all[i].id+"']").find("td[data-id='"+Team.all[i].id+"']").html("X");
 					$('#team-row').find("tr[data-row='"+Team.all[i].id+"']").find("td[data-id='"+oppid+"']").html(scoretable());
-					console.log(oppid + oppscore);
 				} else {
 					var oppscore =  parseInt(game.find("input[data-id='"+Team.all[i].id+"']").parent().find('input').eq(0).val());
 					game.find("input[data-id='"+Team.all[i].id+"']").parent().append(scorefixture()); 
-					console.log(oppid, oppscore);
 					//DISPLAY 
 					$('#team-row').find("tr[data-row='"+Team.all[i].id+"']").find("td[data-id='"+Team.all[i].id+"']").html("X");
 				}
