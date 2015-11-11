@@ -1,5 +1,6 @@
 $(function(){
 
+	//////// CONSTRUCTOR ////////
 	function Team (name, abbr){
 		this.constructor.all.push(this);
 		this.name = name;
@@ -14,7 +15,7 @@ $(function(){
 		this.gf = 0;
 		this.ga = 0;
 		this.diff = 0;
-		
+
 		//// MAIN TABLE ROW ////
 		this.el = function(){
 			return "<tr data-id='"+this.id+"'><td>" + this.name + "</td><td>" + this.games + "</td><td>" + this.wins + "</td><td>" + this.draws + "</td><td>" + this.losses + "</td><td>" + this.points + "</td><td>" + this.gf + "</td><td>" + this.ga + "</td><td>" + this.diff +"</td></tr>";
@@ -31,23 +32,25 @@ $(function(){
 		this.tablerow = function(){
 			return "<tr data-row='"+this.id+"'><th>" + this.abbr + "</th><td data-id='0'></td><td data-id='1'></td><td data-id='2'></td><td data-id='3'></td><td data-id='4'></td><td data-id='5'></td></tr>";
 		};
-		
+
 		//// SECOND TABLE DISPLAY ////
 		this.display2 = function(){
 			$('#team-heading').append(this.tablehead());
 			$('#team-row').append(this.tablerow());
 		};
-	}
+	} //////// END CONSTRUCTOR FUNCTION ////////
+
+
 	//// TEAM COUNTER ////
 	Team.count = 0;
 
 
 	//// SORTABLE TABLE ////
 	 $('#simpleTable').stupidtable();
-	
+
 	//// CREATE TEAM ARRAY ////
 	Team.all = [];
-	
+
 	//// CREATE TEAMS ////
 	var czech = new Team("Czech Republic", "CZE");
 	var iceland = new Team("Iceland", "ICE");
@@ -56,14 +59,14 @@ $(function(){
 	var latvia = new Team ("Latvia", "LAT");
 	var kazakhstan = new Team ("Kazakhstan", "KZK");
 
-	//// DISPLAY TEAMS IN TABLES ////	
+	//// DISPLAY TEAMS IN TABLES ////
 	for (var i = 0; i < Team.all.length; i++){
 		Team.all[i].display();
 		Team.all[i].display2();
 	}
 
 
-	//// MATCH DISPLAY ////
+	//////// GAME ROUND DISPLAY ////////
 	//ROUND 1
 	function DisplayGame1(){
 		return "<li>"+czech.abbr+"<input data-id='"+czech.id+"'> vs. "+iceland.abbr+"<input data-id='"+iceland.id+"'></li>"+
@@ -80,7 +83,7 @@ $(function(){
 	}
 	$("#game2").append(DisplayGame2());
 	$("#play2").hide();
-	
+
 	//ROUND 3
 	function DisplayGame3(){
 		return "<li>"+czech.abbr+"<input data-id='"+czech.id+"'> vs. "+netherlands.abbr+"<input data-id='"+netherlands.id+"'></li>"+
@@ -134,7 +137,7 @@ $(function(){
 	}
 	$("#game8").append(DisplayGame8());
 	$("#play8").hide();
-	
+
 	//ROUND 9
 	function DisplayGame9(){
 		return "<li>"+czech.abbr+"<input data-id='"+czech.id+"'> vs. "+kazakhstan.abbr+"<input data-id='"+kazakhstan.id+"'></li>"+
@@ -152,15 +155,18 @@ $(function(){
 	}
 	$("#game10").append(DisplayGame10());
 	$("#play10").hide();
-	var pointarray = [];
-		//// CHANGE UNIFORM DATA ////
+
+	///////// END DISPLAY GAME ROUNDS ////////
+
+	//////// PLAY A GAME FUNCTION ////////
 	var gametime =	function (game){
 		for (var i = 0; i < Team.all.length; i++){
-			// DECLARE VARIABLES
+			//// DECLARE VARIABLES
 			var index = game.find("input[data-id='"+Team.all[i].id+"']").index(),
 				teamscore = parseInt(game.find("input[data-id='"+Team.all[i].id+"']").val()),
-				oppscore = 0, 
+				oppscore = 0,
 				oppid = parseInt(game.find("input[data-id='"+Team.all[i].id+"']").siblings().data('id'));
+			// DISPLAY FUNCTIONS
 			scoretable = function(){
 				return teamscore + " - " + oppscore;
 			};
@@ -175,19 +181,22 @@ $(function(){
 				$('#team-row').find("tr[data-row='"+Team.all[i].id+"']").find("td[data-id='"+oppid+"']").html(scoretable());
 			} else {
 				var oppscore =  parseInt(game.find("input[data-id='"+Team.all[i].id+"']").parent().find('input').eq(0).val());
-				game.find("input[data-id='"+Team.all[i].id+"']").parent().append(scorefixture()); 
+				game.find("input[data-id='"+Team.all[i].id+"']").parent().append(scorefixture());
 				$('#team-row').find("tr[data-row='"+Team.all[i].id+"']").find("td[data-id='"+Team.all[i].id+"']").html("X");
 			}
-			//MODIFY TABLE DATA
+			//// MODIFY TABLE DATA
+			//ALTER GOALS
 			Team.all[i].games += 1;
 			Team.all[i].gf += teamscore;
 			Team.all[i].ga += oppscore;
 			Team.all[i].diff = parseInt(Team.all[i].gf - Team.all[i].ga);
 
-			if ($('input').val() === ""){		//TABLE VALIDATION
+			//TABLE VALIDATION -- doesn't work, can't still get NaN, will need to fix
+			if ($('input').val() === ""){
 				return alert("fill in the boxes!!!");
 			}
 
+			// ALTER W-D-L-PTS
 			if (teamscore > oppscore){
 				Team.all[i].wins += 1;
 				Team.all[i].points +=3;
@@ -198,36 +207,27 @@ $(function(){
 				Team.all[i].points += 1;
 			}
 
+			// UPDATE TABLE 1 DISPLAY
 			$('tbody').find('tr[data-id="'+Team.all[i].id+'"]').remove();
 			Team.all[i].display();
 
 
 		} //end for loop
 	}; //end gametime function
+	//////// END GAMEPLAY FUNCTION ////////
 
-	// var pointarray = [];
-	// var pointvalue = function(){
-	// 	for (i = 0; i < Team.all.length; i++){
-	// 		pointarray.push(Team.all.points);
-	// 		console.log(Team.all.points);
-	// 	}
-	// 	var champion = parseInt(Math.max(pointarray));
-	// 	console.log(champion);
-	// 	if (champion === Team.all.points){
-	// 		$('tr').css({backgroundColor: "#ffe"});
-	// 	}
-	// }
+	//////// HIDE EACH GAME ////////
+	$('#game2').hide();
+	$('#game3').hide();
+	$('#game4').hide();
+	$('#game5').hide();
+	$('#game6').hide();
+	$('#game7').hide();
+	$('#game8').hide();
+	$('#game9').hide();
+	$('#game10').hide();
 
-	$('#game2').hide();	
-	$('#game3').hide();	
-	$('#game4').hide();	
-	$('#game5').hide();	
-	$('#game6').hide();	
-	$('#game7').hide();	
-	$('#game8').hide();	
-	$('#game9').hide();	
-	$('#game10').hide();	
-
+	//////// DISPLAY AND EXECUTE GAMES /////////
 	//DISPLAY ROUND 1 RESULTS
 	$("#play1").click(function(event){
 		event.preventDefault();
@@ -237,7 +237,7 @@ $(function(){
 		$('#game2').show();
 		$('#play2').show();
 	});
-	
+
 	//DISPLAY ROUND 2 RESULTS
 	$("#play2").click(function(event){
 		event.preventDefault();
@@ -247,7 +247,7 @@ $(function(){
 		$('#game3').show();
 		$('#play3').show();
 	});
-	
+
 	//DISPLAY ROUND 3 RESULTS
 	$("#play3").click(function(event){
 		event.preventDefault();
@@ -291,7 +291,7 @@ $(function(){
 		gametime($("#game7"));
 		$("#play7").remove(); //Remove this button, so that you can only play this game once.
 		$('#game7 input').hide();
-		$('#game8').show();	
+		$('#game8').show();
 		$('#play8').show();
 	});
 	//DISPLAY ROUND 8 RESULTS
@@ -300,7 +300,7 @@ $(function(){
 		gametime($("#game8"));
 		$("#play8").remove(); //Remove this button, so that you can only play this game once.
 		$('#game8 input').hide();
-		$('#game9').show();		
+		$('#game9').show();
 		$('#play9').show();
 	});
 	//DISPLAY ROUND 9 RESULTS
@@ -309,7 +309,7 @@ $(function(){
 		gametime($("#game9"));
 		$("#play9").remove(); //Remove this button, so that you can only play this game once.
 		$('#game9 input').hide();
-		$('#game10').show();		
+		$('#game10').show();
 		$('#play10').show();
 	});
 	//DISPLAY ROUND 10 RESULTS
