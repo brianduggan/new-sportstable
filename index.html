@@ -7,50 +7,68 @@
 </head>
 <body>
 	<h1>Euro Sports Table</h1>
-	<div id="standings">
-		<table id="simpleTable">
-			<thead>
-				<tr>
-					<th data-sort="string">Team</th>
-					<th data-sort="int">GP</th>
-					<th data-sort="int">W</th>
-					<th data-sort="int">D</th>
-					<th data-sort="int">L</th>
-					<th data-sort="int">Pts.</th>
-					<th data-sort="int">GF</th>
-					<th data-sort="int">GA</th>
-					<th data-sort="int">+/-</th>
-				</tr>	
-			</thead>
-			
-			<tbody>	
-			</tbody>
-		</table>
-	</div> <!-- END STANDINGS -->
+	<div id="row" class="clearfix">
+		<div id="standings" class="col-2">
+			<h2>League Table</h2>
+			<table id="simpleTable">
+				<thead>
+					<tr>
+						<th data-sort="string">Team</th>
+						<th data-sort="int">GP</th>
+						<th data-sort="int">W</th>
+						<th data-sort="int">D</th>
+						<th data-sort="int">L</th>
+						<th data-sort="int">Pts.</th>
+						<th data-sort="int">GF</th>
+						<th data-sort="int">GA</th>
+						<th data-sort="int">+/-</th>
+					</tr>	
+				</thead>
+				
+				<tbody>	
+				</tbody>
+			</table>
+		</div> <!-- END STANDINGS -->
 
-	<div id="matches">
-		<h2>Match Result Table</h2>
-		<table id="secondTable">
-			<thead>
-				<tr><th></th>
-				<th></th>
-				<th></th>
-				<th></th><th>Away</th></tr>
-				<tr id="team-heading">
-					<th>Home</th>
-				</tr>	
-			</thead>
-			<tbody id="team-row">	
-			</tbody>
-		</table>
-	</div>  <!-- END MATCHES -->
-
+		<div id="matches" class="col-2">
+			<h2>Match Result Table</h2>
+			<table id="secondTable">
+				<thead>
+					<tr><th></th>
+					<th></th>
+					<th></th>
+					<th></th><th>Away</th></tr>
+					<tr id="team-heading">
+						<th>Home</th>
+					</tr>	
+				</thead>
+				<tbody id="team-row">	
+				</tbody>
+			</table>
+		</div>  <!-- END MATCHES -->
+	</div> <!-- END ROW -->
 	<div id="schedule">
 		<h2>Fixtures</h2>
 		<ul id="game1"></ul>
 		<button type='submit' id="play1">Play!</button>
 		<ul id="game2"></ul>
 		<button type='submit' id="play2">Play!</button>
+		<ul id="game3"></ul>
+		<button type='submit' id="play3">Play!</button>
+		<ul id="game4"></ul>
+		<button type='submit' id="play4">Play!</button>
+		<ul id="game5"></ul>
+		<button type='submit' id="play5">Play!</button>
+		<ul id="game6"></ul>
+		<button type='submit' id="play6">Play!</button>
+		<ul id="game7"></ul>
+		<button type='submit' id="play7">Play!</button>
+		<ul id="game8"></ul>
+		<button type='submit' id="play8">Play!</button>
+		<ul id="game9"></ul>
+		<button type='submit' id="play9">Play!</button>
+		<ul id="game10"></ul>
+		<button type='submit' id="play10">Play!</button>
 	</div>
 	
 

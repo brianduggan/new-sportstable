@@ -1,3 +1,7 @@
+*{
+  box-sizing: border-box;
+}
+
 #standings {
 	padding-bottom: 10px;
 }
@@ -6,6 +10,34 @@ th {
 	font-weight: bold;
 }
 
+h1 {
+  text-align: center;
+}
+
+.col-2 {
+  float: left;
+  max-width: 30%;
+  margin: 2%;
+}
+
+#matches {
+  margin-left: 10px;
+}
+
+#row {
+  text-align: center;
+  margin: 0 10% 0 10%;
+}
+
+.clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+     }
+
 #schedule ul input{
 	max-width: 10px;
 	margin-left: 2px;
@@ -13,4 +45,14 @@ th {
 
 #team-row td {
 	text-align: center;
+}
+
+#secondTable tbody td {
+	border: 1px solid black;
+	border-top: 0;
+	border-left: 0;
+}
+
+#game1 span, #game2 span, #game3 span, #game4 span, #game5 span, #game6 span, #game7 span, #game8 span, #game9 span, #game10 span{
+	padding-left: 20px;
 }
